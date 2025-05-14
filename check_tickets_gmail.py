@@ -32,4 +32,7 @@ def send_email():
 
 if __name__ == "__main__":
     if check_tickets():
+        print(f"✅ Tickets for {TARGET_ARTIST} are available")
         send_email()
+    else:
+        print(f"❌ Tickets for {TARGET_ARTIST} are not available")
