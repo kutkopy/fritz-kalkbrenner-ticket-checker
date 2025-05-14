@@ -1,4 +1,4 @@
-name: Check Tickets for Fritz Kalkbrenner
+name: Check Tickets Mailjet
 on:
   schedule:
     - cron: '*/15 * * * *'
