@@ -11,6 +11,7 @@ jobs:
       - name: Print secret (should be masked)
         run: |
           echo "API KEY: $MAILJET_API_KEY"
+          echo "API KEY: $TO_MAIL"
           echo "IS EMPTY?: ${MAILJET_API_KEY:-EMPTY}"
         env:
           MAILJET_API_KEY: ${{ secrets.MAILJET_API_KEY }}
