@@ -47,6 +47,7 @@ def send_email():
 if __name__ == "__main__":
     if check_tickets():
         print("✅ Tickets available")
+        print(f"{FROM_EMAIL}")
         send_email()
     else:
         print("❌ No tickets available")
