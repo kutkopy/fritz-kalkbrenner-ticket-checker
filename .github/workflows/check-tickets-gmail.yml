@@ -1,4 +1,4 @@
-name: Check Tickets
+name: Check Tickets Gmail
 
 on:
   schedule:
@@ -26,4 +26,4 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           YOUR_EMAIL: "mich.stauffer@gmail.com"
           TARGET_ARTIST: "balkan"
-        run: python check_tickets.py
+        run: python check_tickets_gmail.py
