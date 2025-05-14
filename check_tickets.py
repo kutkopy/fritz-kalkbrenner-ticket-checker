@@ -25,12 +25,12 @@ def send_email():
         'Messages': [
             {
                 "From": {
-                    "Email": FROM_EMAIL,
+                    "Email": f"{FROM_EMAIL}",
                     "Name": "Ticket Agent"
                 },
                 "To": [
                     {
-                        "Email": TO_EMAIL,
+                        "Email": f"{TO_EMAIL}",
                         "Name": "You"
                     }
                 ],
