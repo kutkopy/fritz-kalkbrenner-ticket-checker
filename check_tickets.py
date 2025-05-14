@@ -10,8 +10,8 @@ TARGET_ARTIST = "Balkan"
 # Environment variables from GitHub secrets
 MAILJET_API_KEY = os.environ["MAILJET_API_KEY"]
 MAILJET_API_SECRET = os.environ["MAILJET_API_SECRET"]
-FROM_EMAIL = os.environ["FROM_EMAIL"]
-TO_EMAIL = os.environ["TO_EMAIL"]
+MAILJET_FROM_EMAIL = os.environ["MAILJET_FROM_MAIL"]
+MAILJET_TO_EMAIL = os.environ["MAILJET_TO_MAIL"]
 
 def check_tickets():
     response = requests.get(CHECK_URL)
@@ -25,12 +25,12 @@ def send_email():
         'Messages': [
             {
                 "From": {
-                    "Email": f"{FROM_EMAIL}",
+                    "Email": f"{MAILJET_FROM_EMAIL}",
                     "Name": "Ticket Agent"
                 },
                 "To": [
                     {
-                        "Email": f"{TO_EMAIL}",
+                        "Email": f"{MAILJET_TO_EMAIL}",
                         "Name": "You"
                     }
                 ],
@@ -39,7 +39,7 @@ def send_email():
             }
         ]
     }
-    print(data)
+    print(f"Mail data:{data}")
 
     result = mailjet.send.create(data=data)
     print(f"Email sent. Status code: {result.status_code}")
@@ -48,7 +48,6 @@ def send_email():
 if __name__ == "__main__":
     if check_tickets():
         print("✅ Tickets available")
-        print(f"{FROM_EMAIL}")
         send_email()
     else:
         print("❌ No tickets available")
