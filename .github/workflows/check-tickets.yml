@@ -1,5 +1,4 @@
-name: Check Tickets with Mailjet
-
+name: Check Tickets for Fritz Kalkbrenner
 on:
   schedule:
     - cron: '*/15 * * * *'
@@ -20,15 +19,10 @@ jobs:
       - name: Install dependencies
         run: pip install requests beautifulsoup4 mailjet-rest
 
-      - name: Debug environment variables
-        run: |
-          echo "Checking injected env variables..."
-          env | grep -E 'MAILJET|EMAIL' | sed 's/=.*/=[REDACTED]/'
-
       - name: Run ticket checker
+        run: python check_tickets.py
         env:
           MAILJET_API_KEY: ${{ secrets.MAILJET_API_KEY }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
           TO_EMAIL: ${{ secrets.TO_EMAIL }}
-        run: python check_tickets.py
