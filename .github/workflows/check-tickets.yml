@@ -22,7 +22,7 @@ jobs:
       - name: Run ticket checker
         run: python check_tickets.py
         env:
-          TO_MAIL: "mich.stauffer@gmail.com"
-          FROM_MAIL: "mich.stauffer@gmail.com"
+          MAILJET_TO_MAIL: "mich.stauffer@gmail.com"
+          MAILJET_FROM_MAIL: "mich.stauffer@gmail.com"
           MAILJET_API_KEY: ${{ secrets.MAILJET_API_KEY }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
