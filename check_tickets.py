@@ -1,17 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
-import smtplib
-from email.message import EmailMessage
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 import os
 
 CHECK_URL = "https://tickets.dasviertel.ch/"
-TARGET_ARTIST = "Balkan Comedy Night"
-
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 587
-SMTP_USER = os.environ["SMTP_USER"]
-SMTP_PASSWORD = os.environ["SMTP_PASSWORD"]
-YOUR_EMAIL = os.environ["YOUR_EMAIL"]
+TARGET_ARTIST = "Balkan"
+TO_EMAIL = os.environ["TO_EMAIL"]
+FROM_EMAIL = os.environ["FROM_EMAIL"]  # e.g. verified sender on SendGrid
+SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
 
 def check_tickets():
     response = requests.get(CHECK_URL)
@@ -19,16 +16,18 @@ def check_tickets():
     return TARGET_ARTIST.lower() in soup.get_text().lower()
 
 def send_email():
-    msg = EmailMessage()
-    msg['Subject'] = f"🎫 {TARGET_ARTIST} tickets available!"
-    msg['From'] = SMTP_USER
-    msg['To'] = YOUR_EMAIL
-    msg.set_content(f"Check the ticket page: {CHECK_URL}")
-
-    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-        server.starttls()
-        server.login(SMTP_USER, SMTP_PASSWORD)
-        server.send_message(msg)
+    message = Mail(
+        from_email=FROM_EMAIL,
+        to_emails=TO_EMAIL,
+        subject=f"🎫 {TARGET_ARTIST} tickets available!",
+        plain_text_content=f"Tickets available at {CHECK_URL}"
+    )
+    try:
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        response = sg.send(message)
+        print(f"Email sent. Status: {response.status_code}")
+    except Exception as e:
+        print(f"Error sending email: {e}")
 
 if __name__ == "__main__":
     if check_tickets():
