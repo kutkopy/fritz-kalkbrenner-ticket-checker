@@ -21,6 +21,11 @@ jobs:
       - name: Install dependencies
         run: pip install requests beautifulsoup4 mailjet-rest
 
+      - name: Debug environment variables
+        run: |
+          echo "Checking injected env variables..."
+          env | grep -E 'MAILJET|EMAIL' | sed 's/=.*/=[REDACTED]/'
+
       - name: Run ticket checker
         env:
           MAILJET_API_KEY: ${{ secrets.MAILJET_API_KEY }}
