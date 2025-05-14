@@ -5,7 +5,7 @@ from email.message import EmailMessage
 import os
 
 CHECK_URL = "https://tickets.dasviertel.ch/"
-TARGET_ARTIST = "Fritz Kalkbrenner"
+TARGET_ARTIST = "Balkan Comedy Night"
 
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
