@@ -25,5 +25,5 @@ jobs:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           RECEIVER_EMAIL: "mich.stauffer@gmail.com"
-          TARGET_ARTIST: TARGET_ARTIST
+          TARGET_ARTIST: ${{ vars.TARGET_ARTIST }}
         run: python check_tickets_gmail.py
