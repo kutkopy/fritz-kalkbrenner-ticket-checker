@@ -1,0 +1,16 @@
+name: Secret Debug
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print secret (should be masked)
+        run: |
+          echo "API KEY: $MAILJET_API_KEY"
+          echo "IS EMPTY?: ${MAILJET_API_KEY:-EMPTY}"
+        env:
+          MAILJET_API_KEY: ${{ secrets.MAILJET_API_KEY }}
