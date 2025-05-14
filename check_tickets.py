@@ -34,11 +34,12 @@ def send_email():
                         "Name": "You"
                     }
                 ],
-                "Subject": "🎫 Fritz Kalkbrenner tickets available!",
+                "Subject": f"🎫 {TARGET_ARTIST} tickets available!",
                 "TextPart": f"Tickets for {TARGET_ARTIST} are now available: {CHECK_URL}"
             }
         ]
     }
+    print(data)
 
     result = mailjet.send.create(data=data)
     print(f"Email sent. Status code: {result.status_code}")
