@@ -5,7 +5,7 @@ import os
 
 # Constants
 CHECK_URL = "https://tickets.dasviertel.ch/"
-TARGET_ARTIST = "Fritz Kalkbrenner"
+TARGET_ARTIST = "Balkan"
 
 # Environment variables from GitHub secrets
 MAILJET_API_KEY = os.environ["MAILJET_API_KEY"]
@@ -46,4 +46,7 @@ def send_email():
 
 if __name__ == "__main__":
     if check_tickets():
+        print("✅ Tickets available")
         send_email()
+    else:
+        print("❌ No tickets available")
