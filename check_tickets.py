@@ -1,14 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from mailjet_rest import Client
 import os
 
+# Constants
 CHECK_URL = "https://tickets.dasviertel.ch/"
-TARGET_ARTIST = "Balkan"
+TARGET_ARTIST = "Fritz Kalkbrenner"
+
+# Environment variables from GitHub secrets
+MAILJET_API_KEY = os.environ["MAILJET_API_KEY"]
+MAILJET_API_SECRET = os.environ["MAILJET_API_SECRET"]
+FROM_EMAIL = os.environ["FROM_EMAIL"]
 TO_EMAIL = os.environ["TO_EMAIL"]
-FROM_EMAIL = os.environ["FROM_EMAIL"]  # e.g. verified sender on SendGrid
-SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
 
 def check_tickets():
     response = requests.get(CHECK_URL)
@@ -16,18 +19,30 @@ def check_tickets():
     return TARGET_ARTIST.lower() in soup.get_text().lower()
 
 def send_email():
-    message = Mail(
-        from_email=FROM_EMAIL,
-        to_emails=TO_EMAIL,
-        subject=f"🎫 {TARGET_ARTIST} tickets available!",
-        plain_text_content=f"Tickets available at {CHECK_URL}"
-    )
-    try:
-        sg = SendGridAPIClient(SENDGRID_API_KEY)
-        response = sg.send(message)
-        print(f"Email sent. Status: {response.status_code}")
-    except Exception as e:
-        print(f"Error sending email: {e}")
+    mailjet = Client(auth=(MAILJET_API_KEY, MAILJET_API_SECRET), version='v3.1')
+
+    data = {
+        'Messages': [
+            {
+                "From": {
+                    "Email": FROM_EMAIL,
+                    "Name": "Ticket Agent"
+                },
+                "To": [
+                    {
+                        "Email": TO_EMAIL,
+                        "Name": "You"
+                    }
+                ],
+                "Subject": "🎫 Fritz Kalkbrenner tickets available!",
+                "TextPart": f"Tickets for {TARGET_ARTIST} are now available: {CHECK_URL}"
+            }
+        ]
+    }
+
+    result = mailjet.send.create(data=data)
+    print(f"Email sent. Status code: {result.status_code}")
+    print(result.json())
 
 if __name__ == "__main__":
     if check_tickets():
